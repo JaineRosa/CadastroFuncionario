@@ -10,7 +10,7 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> 
     Optional<Funcionario> findByEmail(String email);
     boolean existsByEmail(String email);
 
-    Optional<Funcionario> findByCPF(String email);
-    boolean existsByCPF(String CPF);
+    Optional<Funcionario> findByCpf(String email);
+    boolean existsByCpf(String cpf);
 
 }

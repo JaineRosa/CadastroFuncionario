@@ -26,7 +26,7 @@ public class FuncionarioServiceImpl implements FuncionarioService{
         dto.setNome(f.getNome());
         dto.setEmail(f.getEmail());
         dto.setTelefone(f.getTelefone());
-        dto.setCPF(f.getCPF());
+        dto.setcpf(f.getcpf());
         dto.setDataNasc(f.getDataNasc());
         dto.setSalario(f.getSalario());
         return dto;
@@ -37,7 +37,7 @@ public class FuncionarioServiceImpl implements FuncionarioService{
         f.setNome(dto.getNome());
         f.setEmail(dto.getEmail());
         f.setTelefone(dto.getTelefone());
-        f.setCPF(dto.getCPF());
+        f.setcpf(dto.getcpf());
         f.setDataNasc(dto.getDataNasc());
         f.setSalario(dto.getSalario());
         return f;
@@ -50,8 +50,8 @@ public class FuncionarioServiceImpl implements FuncionarioService{
             throw new IllegalArgumentException("Email já cadastrado para outro funcionário");
         }
 
-        if (funcionarioRepository.existsByCPF(dto.getCPF())) {
-            throw new IllegalArgumentException("CPF já cadastrado para outro funcionário");
+        if (funcionarioRepository.existsByCpf(dto.getcpf())) {
+            throw new IllegalArgumentException("cpf já cadastrado para outro funcionário");
         }
 
         Funcionario novoFuncionario = toEntity(dto);

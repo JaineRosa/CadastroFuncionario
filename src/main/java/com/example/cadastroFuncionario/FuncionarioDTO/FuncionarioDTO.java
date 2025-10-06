@@ -21,9 +21,9 @@ public class FuncionarioDTO {
     @Size(max = 20, message = "O telefone deve ter no máximo 20 caracteres")
     private String telefone;
 
-    @NotBlank(message = "CPF do funcionário é obrigatório")
-    @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos")
-    private String CPF;
+    @NotBlank(message = "cpf do funcionário é obrigatório")
+    @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos")
+    private String cpf;
 
     @NotNull(message = "Data de nascimento é obrigatória")
     @Past(message = "A data de nascimento deve ser anterior à data atual")
@@ -65,12 +65,12 @@ public class FuncionarioDTO {
         this.telefone = telefone;
     }
 
-    public @NotBlank(message = "CPF do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos") String getCPF() {
-        return CPF;
+    public @NotBlank(message = "cpf do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos") String getcpf() {
+        return cpf;
     }
 
-    public void setCPF(@NotBlank(message = "CPF do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O CPF deve conter exatamente 11 dígitos numéricos") String CPF) {
-        this.CPF = CPF;
+    public void setcpf(@NotBlank(message = "cpf do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos") String cpf) {
+        this.cpf = cpf;
     }
 
     public @NotNull(message = "Data de nascimento é obrigatória") @Past(message = "A data de nascimento deve ser anterior à data atual") Date getDataNasc() {

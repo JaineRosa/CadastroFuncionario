@@ -25,22 +25,22 @@ public class Funcionario {
     private String telefone;
 
     @Column(length = 11)
-    private String CPF;
+    private String cpf;
 
     private Double salario;
 
     public Funcionario() {
     }
 
-    public Funcionario(Long id, String nome, Date dataNasc, String nacionalidade, String email, String telefone, String CPF, Double salário) {
+    public Funcionario(Long id, String nome, Date dataNasc, String nacionalidade, String email, String telefone, String cpf, Double salario) {
         this.id = id;
         this.nome = nome;
         this.dataNasc = dataNasc;
         this.nacionalidade = nacionalidade;
         this.email = email;
         this.telefone = telefone;
-        this.CPF = CPF;
-        this.salario = salário;
+        this.cpf = cpf;
+        this.salario = salario;
     }
 
     public Long getId() {
@@ -91,12 +91,12 @@ public class Funcionario {
         this.telefone = telefone;
     }
 
-    public String getCPF() {
-        return CPF;
+    public String getcpf() {
+        return cpf;
     }
 
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
+    public void setcpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public Double getSalario() {
