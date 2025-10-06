@@ -43,4 +43,10 @@ private final FuncionarioService funcionarioService;
 
         return ResponseEntity.created(URI.create("/funcionarios" + criado.getId())).body(criado);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id){
+        funcionarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

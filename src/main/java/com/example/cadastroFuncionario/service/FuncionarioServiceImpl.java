@@ -4,8 +4,11 @@ import com.example.cadastroFuncionario.FuncionarioDTO.FuncionarioDTO;
 import com.example.cadastroFuncionario.excepetions.ResourceNotFoundException;
 import com.example.cadastroFuncionario.model.Funcionario;
 import com.example.cadastroFuncionario.repository.FuncionarioRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,4 +78,13 @@ public class FuncionarioServiceImpl implements FuncionarioService{
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deletar(Long id) {
+        if(!funcionarioRepository.existsById(id)){
+            throw  new ResourceNotFoundException("Pagante não encontrado com o id " +id);
+        }
+        funcionarioRepository.deleteById(id);
+    }
+
 }
