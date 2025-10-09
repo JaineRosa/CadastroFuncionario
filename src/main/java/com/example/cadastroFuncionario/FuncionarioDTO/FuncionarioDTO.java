@@ -1,5 +1,6 @@
 package com.example.cadastroFuncionario.FuncionarioDTO;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 
 import java.util.Date;
@@ -33,6 +34,13 @@ public class FuncionarioDTO {
     @Positive(message = "O salário deve ser maior que zero")
     private Double salario;
 
+    @NotNull(message = "Cargo é obrigatório")
+    @Size(max = 100, message = "O Cargo deve ter no máximo 100 caracteres")
+    private String cargo;
+
+    @NotNull(message = "Data de contratação é obrigatória")
+    private Date dataContratacao;
+
     public Long getId() {
         return id;
     }
@@ -65,11 +73,11 @@ public class FuncionarioDTO {
         this.telefone = telefone;
     }
 
-    public @NotBlank(message = "cpf do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos") String getcpf() {
+    public @NotBlank(message = "cpf do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos") String getCpf() {
         return cpf;
     }
 
-    public void setcpf(@NotBlank(message = "cpf do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos") String cpf) {
+    public void setCpf(@NotBlank(message = "cpf do funcionário é obrigatório") @Pattern(regexp = "\\d{11}", message = "O cpf deve conter exatamente 11 dígitos numéricos") String cpf) {
         this.cpf = cpf;
     }
 
@@ -87,5 +95,21 @@ public class FuncionarioDTO {
 
     public void setSalario(@NotNull(message = "Salário do funcionário é obrigatório") @Positive(message = "O salário deve ser maior que zero") Double salario) {
         this.salario = salario;
+    }
+
+    public @NotNull(message = "Cargo é obrigatório") @Size(max = 100, message = "O Cargo deve ter no máximo 100 caracteres") String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(@NotNull(message = "Cargo é obrigatório") @Size(max = 100, message = "O Cargo deve ter no máximo 100 caracteres") String cargo) {
+        this.cargo = cargo;
+    }
+
+    public @NotNull(message = "Data de contratação é obrigatória") Date getDataContratacao() {
+        return dataContratacao;
+    }
+
+    public void setDataContratacao(@NotNull(message = "Data de contratação é obrigatória") Date dataContratacao) {
+        this.dataContratacao = dataContratacao;
     }
 }

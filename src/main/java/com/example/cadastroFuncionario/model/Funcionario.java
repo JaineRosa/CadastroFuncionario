@@ -27,12 +27,17 @@ public class Funcionario {
     @Column(length = 11)
     private String cpf;
 
+    @Column(length = 100)
+    private String cargo;
+
     private Double salario;
+
+    private Date dataContratacao;
 
     public Funcionario() {
     }
 
-    public Funcionario(Long id, String nome, Date dataNasc, String nacionalidade, String email, String telefone, String cpf, Double salario) {
+    public Funcionario(Long id, String nome, Date dataNasc, String nacionalidade, String email, String telefone, String cpf, String cargo, Double salario, Date dataContratacao) {
         this.id = id;
         this.nome = nome;
         this.dataNasc = dataNasc;
@@ -40,7 +45,9 @@ public class Funcionario {
         this.email = email;
         this.telefone = telefone;
         this.cpf = cpf;
+        this.cargo = cargo;
         this.salario = salario;
+        this.dataContratacao = dataContratacao;
     }
 
     public Long getId() {
@@ -91,12 +98,20 @@ public class Funcionario {
         this.telefone = telefone;
     }
 
-    public String getcpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setcpf(String cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     public Double getSalario() {
@@ -105,5 +120,13 @@ public class Funcionario {
 
     public void setSalario(Double salario) {
         this.salario = salario;
+    }
+
+    public Date getDataContratacao() {
+        return dataContratacao;
+    }
+
+    public void setDataContratacao(Date dataContratacao) {
+        this.dataContratacao = dataContratacao;
     }
 }

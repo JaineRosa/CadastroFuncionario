@@ -1,9 +1,13 @@
 package com.example.cadastroFuncionario.service;
 
+import com.example.cadastroFuncionario.FuncionarioDTO.CargoUpdateDTO;
 import com.example.cadastroFuncionario.FuncionarioDTO.FuncionarioDTO;
 import com.example.cadastroFuncionario.excepetions.ResourceNotFoundException;
 import com.example.cadastroFuncionario.model.Funcionario;
 import com.example.cadastroFuncionario.repository.FuncionarioRepository;
+import com.example.cadastroFuncionario.specification.FuncionarioSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +33,11 @@ public class FuncionarioServiceImpl implements FuncionarioService{
         dto.setNome(f.getNome());
         dto.setEmail(f.getEmail());
         dto.setTelefone(f.getTelefone());
-        dto.setcpf(f.getcpf());
+        dto.setCpf(f.getCpf());
         dto.setDataNasc(f.getDataNasc());
         dto.setSalario(f.getSalario());
+        dto.setCargo(f.getCargo());
+        dto.setDataContratacao((f.getDataContratacao()));
         return dto;
     }
 
@@ -40,9 +46,11 @@ public class FuncionarioServiceImpl implements FuncionarioService{
         f.setNome(dto.getNome());
         f.setEmail(dto.getEmail());
         f.setTelefone(dto.getTelefone());
-        f.setcpf(dto.getcpf());
+        f.setCpf(dto.getCpf());
         f.setDataNasc(dto.getDataNasc());
         f.setSalario(dto.getSalario());
+        f.setCargo(dto.getCargo());
+        f.setDataContratacao((dto.getDataContratacao()));
         return f;
     }
 
@@ -53,7 +61,7 @@ public class FuncionarioServiceImpl implements FuncionarioService{
             throw new IllegalArgumentException("Email já cadastrado para outro funcionário");
         }
 
-        if (funcionarioRepository.existsByCpf(dto.getcpf())) {
+        if (funcionarioRepository.existsByCpf(dto.getCpf())) {
             throw new IllegalArgumentException("cpf já cadastrado para outro funcionário");
         }
 
@@ -72,11 +80,11 @@ public class FuncionarioServiceImpl implements FuncionarioService{
 
     @Transactional(readOnly = true)
     @Override
-    public List<FuncionarioDTO> listarTodos() {
-        return funcionarioRepository.findAll()
-                .stream()
-                .map(this::toDto)
-                .collect(Collectors.toList());
+    public Page<FuncionarioDTO> listarTodos (String cargo, String nacionalidade, Double salarioMin, Pageable pageable) {
+        var spec = FuncionarioSpecification.comFiltros(cargo, nacionalidade, salarioMin);
+        return funcionarioRepository.findAll(spec,pageable)
+                .map(this::toDto);
+
     }
 
     @Override
@@ -85,6 +93,50 @@ public class FuncionarioServiceImpl implements FuncionarioService{
             throw  new ResourceNotFoundException("Pagante não encontrado com o id " +id);
         }
         funcionarioRepository.deleteById(id);
+    }
+
+
+    @Override
+    public FuncionarioDTO atualizar(Long id, FuncionarioDTO dto) {
+        Funcionario existe = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado com o id " + id));
+
+        // Verifica se o e-mail já pertence a outro funcionário
+        if (funcionarioRepository.existsByEmailAndIdNot(dto.getEmail(), id)) {
+            throw new IllegalArgumentException("Email já cadastrado para outro funcionário");
+        }
+
+        // Verifica se o CPF já pertence a outro funcionário
+        if (funcionarioRepository.existsByCpfAndIdNot(dto.getCpf(), id)) {
+            throw new IllegalArgumentException("CPF já cadastrado para outro funcionário");
+        }
+
+        // Atualiza os dados
+        existe.setNome(dto.getNome());
+        existe.setEmail(dto.getEmail());
+        existe.setTelefone(dto.getTelefone());
+        existe.setCpf(dto.getCpf());
+        existe.setDataNasc(dto.getDataNasc());
+        existe.setSalario(dto.getSalario());
+        existe.setCargo(dto.getCargo());
+        existe.setDataContratacao(dto.getDataContratacao());
+
+        Funcionario atualizado = funcionarioRepository.save(existe);
+
+        return toDto(atualizado);
+    }
+
+    @Override
+    public FuncionarioDTO mudarCargo(Long id, CargoUpdateDTO cargoUpdateDTO) {
+        Funcionario funcionario = funcionarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado com id: " + id));
+
+        funcionario.setCargo(cargoUpdateDTO.getCargo());
+        funcionario.setSalario(cargoUpdateDTO.getSalario());
+
+        Funcionario atualizado = funcionarioRepository.save(funcionario);
+
+        return toDto(atualizado);
     }
 
 }

@@ -1,9 +1,13 @@
 package com.example.cadastroFuncionario.controller;
 
+import com.example.cadastroFuncionario.FuncionarioDTO.CargoUpdateDTO;
 import com.example.cadastroFuncionario.FuncionarioDTO.FuncionarioDTO;
 import com.example.cadastroFuncionario.excepetions.ResourceNotFoundException;
+import com.example.cadastroFuncionario.model.Funcionario;
 import com.example.cadastroFuncionario.service.FuncionarioService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +25,15 @@ private final FuncionarioService funcionarioService;
         this.funcionarioService = funcionarioService;
     }
 
+
     @GetMapping
-    public ResponseEntity<List<FuncionarioDTO>> listarTodos(){
-        return ResponseEntity.ok(funcionarioService.listarTodos());
+    public ResponseEntity<Page<FuncionarioDTO>> listarComFiltros(
+            @RequestParam(required = false) String cargo,
+            @RequestParam(required = false) String nacionalidade,
+            @RequestParam(required = false) Double salarioMin,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(funcionarioService.listarTodos(cargo, nacionalidade, salarioMin, pageable));
     }
 
     @GetMapping("/{id}")
@@ -44,9 +54,24 @@ private final FuncionarioService funcionarioService;
         return ResponseEntity.created(URI.create("/funcionarios" + criado.getId())).body(criado);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<FuncionarioDTO> atualizar(@Valid @PathVariable Long id, @RequestBody FuncionarioDTO dto) {
+        FuncionarioDTO atualizado = funcionarioService.atualizar(id, dto);
+        return ResponseEntity.ok(atualizado);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id){
         funcionarioService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/cargo")
+    public ResponseEntity<FuncionarioDTO> atualizarCargo(
+            @PathVariable Long id,
+            @RequestBody CargoUpdateDTO cargoUpdateDTO) {
+
+        FuncionarioDTO atualizado = funcionarioService.mudarCargo(id, cargoUpdateDTO);
+        return ResponseEntity.ok(atualizado);
     }
 }
