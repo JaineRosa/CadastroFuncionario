@@ -8,11 +8,13 @@ import com.example.cadastroFuncionario.service.FuncionarioService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,9 +33,11 @@ private final FuncionarioService funcionarioService;
             @RequestParam(required = false) String cargo,
             @RequestParam(required = false) String nacionalidade,
             @RequestParam(required = false) Double salarioMin,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dataContratacaoInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dataContratacaoFim,
             Pageable pageable
     ) {
-        return ResponseEntity.ok(funcionarioService.listarTodos(cargo, nacionalidade, salarioMin, pageable));
+        return ResponseEntity.ok(funcionarioService.listarTodos(cargo, nacionalidade, salarioMin, dataContratacaoInicio, dataContratacaoFim, pageable));
     }
 
     @GetMapping("/{id}")

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,8 +81,15 @@ public class FuncionarioServiceImpl implements FuncionarioService{
 
     @Transactional(readOnly = true)
     @Override
-    public Page<FuncionarioDTO> listarTodos (String cargo, String nacionalidade, Double salarioMin, Pageable pageable) {
-        var spec = FuncionarioSpecification.comFiltros(cargo, nacionalidade, salarioMin);
+    public Page<FuncionarioDTO> listarTodos (
+            String cargo,
+            String nacionalidade,
+            Double salarioMin,
+            Date dataContratacaoInicio,
+            Date dataContratacaoFim,
+            Pageable pageable
+    ) {
+        var spec = FuncionarioSpecification.comFiltros(cargo, nacionalidade, salarioMin,dataContratacaoInicio, dataContratacaoFim);
         return funcionarioRepository.findAll(spec,pageable)
                 .map(this::toDto);
 
